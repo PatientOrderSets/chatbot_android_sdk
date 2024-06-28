@@ -19,12 +19,6 @@ jobs:
       - name: Replace USER_NAME and GIT_PAT in settings.gradle
         run: |
           echo "Checking if secrets are set correctly..."
-          if [[ -z "${{ secrets.GITHUB_USERNAME }}" ]]; then
-            echo "GITHUB_USERNAME is not set!"
-            exit 1
-          else
-            echo "GITHUB_USERNAME is set."
-          fi
           if [[ -z "${{ secrets.GITHUB_PAT }}" ]]; then
             echo "GITHUB_PAT is not set!"
             exit 1
