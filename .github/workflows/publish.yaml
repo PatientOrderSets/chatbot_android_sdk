@@ -1,0 +1,44 @@
+name: Publish
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Run chmod to make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Assemble AAR
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assemble
+        env:
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ github.token }}

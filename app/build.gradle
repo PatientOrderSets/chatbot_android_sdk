@@ -1,0 +1,152 @@
+buildscript {
+    ext.sdkVersion = "1.2.9+2"
+    ext.flutterEngine = "1.0.0-45f6e009110df4f34ec2cf99f63cf73b71b7a420"
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.kezong:fat-aar:1.3.8'
+    }
+}
+
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
+
+android {
+    namespace 'com.thinkresearch.chatbot'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 34
+        versionCode 37
+        versionName "5.1"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+apply plugin: 'com.kezong.fat-aar'
+apply plugin: 'kotlin-kapt'
+
+fataar {
+    transitive = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    debugEmbed ("io.flutter:flutter_embedding_release:$flutterEngine"){
+        transitive = false
+    }
+    releaseEmbed ("io.flutter:flutter_embedding_release:$flutterEngine"){
+        transitive = false
+    }
+
+    debugEmbed ("com.thinkresearch.chatbot_native:flutter_release:$sdkVersion"){
+        transitive = false
+    }
+    releaseEmbed ("com.thinkresearch.chatbot_native:flutter_release:$sdkVersion"){
+        transitive = false
+    }
+
+    debugEmbed ("io.flutter.plugins.pathprovider:path_provider_android_release:$sdkVersion"){
+        transitive = false
+    }
+    releaseEmbed ("io.flutter.plugins.pathprovider:path_provider_android_release:$sdkVersion"){
+        transitive = false
+    }
+
+    debugEmbed ("io.flutter.plugins.sharedpreferences:shared_preferences_android_release:$sdkVersion"){
+        transitive = false
+    }
+    releaseEmbed ("io.flutter.plugins.sharedpreferences:shared_preferences_android_release:$sdkVersion"){
+        transitive = false
+    }
+    debugEmbed ("com.tekartik.sqflite:sqflite_release:$sdkVersion"){
+        transitive = false
+    }
+    releaseEmbed ("com.tekartik.sqflite:sqflite_release:$sdkVersion"){
+        transitive = false
+    }
+
+    debugEmbed ("io.flutter.plugins.urllauncher:url_launcher_android_release:$sdkVersion"){
+        exclude group: 'androidx.core' , module : 'core'
+        exclude group: 'io.flutter' , module : 'flutter_embedding_release'
+        exclude group: 'androidx.annotation' , module : 'annotation'
+        exclude group: 'androidx.collection' , module : 'collection'
+        exclude group: 'androidx.concurrent' , module : 'concurrent-futures'
+        exclude group: 'androidx.interpolator' , module : 'interpolator'
+        exclude group: 'com.google.guava' , module : 'listenablefuture'
+    }
+    releaseEmbed ("io.flutter.plugins.urllauncher:url_launcher_android_release:$sdkVersion"){
+        exclude group: 'androidx.core' , module : 'core'
+        exclude group: 'io.flutter' , module : 'flutter_embedding_release'
+        exclude group: 'androidx.annotation' , module : 'annotation'
+        exclude group: 'androidx.collection' , module : 'collection'
+        exclude group: 'androidx.concurrent' , module : 'concurrent-futures'
+        exclude group: 'androidx.interpolator' , module : 'interpolator'
+        exclude group: 'com.google.guava' , module : 'listenablefuture'
+    }
+
+    debugEmbed ("io.flutter.plugins.webviewflutter:webview_flutter_android_release:$sdkVersion"){
+        transitive = false
+    }
+    releaseEmbed ("io.flutter.plugins.webviewflutter:webview_flutter_android_release:$sdkVersion"){
+        transitive = false
+    }
+
+}
+
+def groovyShell = new GroovyShell()
+def addDll = groovyShell.parse(new File("$rootDir/app/add-dll.gradle"))
+
+addDll.clean(rootDir.toString())
+addDll.flutter(rootDir.toString(), flutterEngine)
+addDll.sqlite(rootDir.toString())
+
+apply plugin: 'maven-publish'
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/naseem123/chatbot_android_sdk")
+                credentials {
+                    username = System.getenv('GITHUB_USER')
+                    password = System.getenv('GITHUB_TOKEN')
+                }
+            }
+        }
+    }
+
+}
