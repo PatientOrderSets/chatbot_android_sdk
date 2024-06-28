@@ -1,11 +1,9 @@
 name: Publish
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
-    types:
-      - closed
+      - main 
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -13,7 +11,6 @@ concurrency:
 
 jobs:
   publish:
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
     environment: Production
     steps:
@@ -42,3 +39,11 @@ jobs:
         env:
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}
+          
+      - name: Publish
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "app/build/outputs/aar/*.aar"
+          replacesArtifacts: false
+          allowUpdates: true
+          tag: ${{needs.release.outputs.tag}}

@@ -1,5 +1,5 @@
 buildscript {
-    ext.sdkVersion = "1.2.9+2"
+    ext.sdkVersion = "1.2.9+7"
     ext.flutterEngine = "1.0.0-45f6e009110df4f34ec2cf99f63cf73b71b7a420"
 
     repositories {
