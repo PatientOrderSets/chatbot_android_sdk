@@ -16,7 +16,22 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
-
+      - name: Replace USER_NAME and GIT_PAT in settings.gradle
+        run: |
+          echo "Checking if secrets are set correctly..."
+          if [[ -z "${{ secrets.GITHUB_USERNAME }}" ]]; then
+            echo "GITHUB_USERNAME is not set!"
+            exit 1
+          else
+            echo "GITHUB_USERNAME is set."
+          fi
+          if [[ -z "${{ secrets.GITHUB_PAT }}" ]]; then
+            echo "GITHUB_PAT is not set!"
+            exit 1
+          else
+            echo "GITHUB_PAT is set."
+          fi
+          
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
@@ -31,6 +46,7 @@ jobs:
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
+
 
       - name: Replace USER_NAME and GIT_PAT in settings.gradle
         run: |
