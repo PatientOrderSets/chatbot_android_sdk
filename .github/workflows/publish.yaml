@@ -32,10 +32,25 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Print secret values
+      - name: Replace USER_NAME and GIT_PAT in settings.gradle
         run: |
-          echo "GITHUB_USERNAME is set to: ***${{ secrets.GITHUB_USERNAME:0:1 }}*** (length: ${#secrets.GITHUB_USERNAME})"
-          echo "GITHUB_PAT is set to: ***${{ secrets.GITHUB_PAT:0:1 }}*** (length: ${#secrets.GITHUB_PAT})"
+          echo "Checking if secrets are set correctly..."
+          if [[ -z "${{ secrets.GITHUB_USERNAME }}" ]]; then
+            echo "GITHUB_USERNAME is not set!"
+            exit 1
+          else
+            echo "GITHUB_USERNAME is set."
+          fi
+          if [[ -z "${{ secrets.GITHUB_PAT }}" ]]; then
+            echo "GITHUB_PAT is not set!"
+            exit 1
+          else
+            echo "GITHUB_PAT is set."
+          fi
+          
+          echo "Replacing values in settings.gradle..."
+          sed -i 's/USER_NAME/${{ secrets.GITHUB_USERNAME }}/g' settings.gradle
+          sed -i 's/GIT_PAT/${{ secrets.GITHUB_PAT }}/g' settings.gradle
 
       - name: Replace USER_NAME and GIT_PAT in settings.gradle
         run: |
