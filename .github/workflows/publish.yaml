@@ -8,7 +8,8 @@ on:
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
-
+env:
+  GITHUB_PAT_TOKEN: ${{secrets.GITHUB_PAT_TOKEN}}
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -33,11 +34,10 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
 
-      - name: Replace USER_NAME and GIT_PAT in settings.gradle
+      - name: Assemble AAR
         run: |
           
-          echo "Replacing values in settings.gradle..."
-          sed -i 's/GIT_PAT/${{ secrets.GITHUB_PAT_TOKEN }}/g' settings.gradle
+          ./gradlew assembleRelease -GITHUB_PAT_TOKEN=${{}}
 
       - name: Assemble AAR
         uses: gradle/gradle-build-action@v2
