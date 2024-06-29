@@ -15,7 +15,7 @@ dependencyResolutionManagement {
             url = uri("https://maven.pkg.github.com/suhail-trc/chatbot_sdk_channel")
             credentials {
                 username = "suhail-trc"
-                password = System.getenv('GITHUB_PAT_TOKEN')
+                password = System.getProperty("github.pat.token")
             }
         }
         maven {
