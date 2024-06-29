@@ -50,7 +50,7 @@ jobs:
       - name: Publish
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "app/build/outputs/aar/*.aar"
+          artifacts: "app/build/outputs/aar/app-release.aar"
           replacesArtifacts: false
           allowUpdates: true
           tag: ${{needs.release.outputs.tag}}
