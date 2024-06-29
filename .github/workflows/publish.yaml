@@ -42,6 +42,7 @@ jobs:
       - name: Assemble AAR
         run: |
           ./gradlew assembleRelease -DGITHUB_PAT_TOKEN=$PAT
+          ls
         env:
           PAT: ${{ secrets.PAT_TOKEN }}
      
