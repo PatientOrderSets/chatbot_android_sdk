@@ -48,8 +48,7 @@ jobs:
      
       - name: Rename AAR file
         run: |
-          TAG_NAME= ${{github.ref_name}}
-          mv app/build/outputs/aar/app-release.aar app/build/outputs/aar/chatbot_v${TAG_NAME}.aar
+          mv app/build/outputs/aar/app-release.aar app/build/outputs/aar/chatbot_v${{ github.ref_name }}.aar
       - name: Publish
         uses: ncipollo/release-action@v1
         with:
