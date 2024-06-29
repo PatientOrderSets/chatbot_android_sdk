@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     steps:
+      - name: Use the secret
+        run: echo ${{ secrets.MY_API_KEY }}   
+        env:
+          SECRET_NAME: ${{ secrets.MY_API_KEY }}
       - name: 'Checkout'
         uses: actions/checkout@v4
           
