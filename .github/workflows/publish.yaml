@@ -42,15 +42,18 @@ jobs:
       - name: Assemble AAR
         run: |
           ./gradlew assembleRelease -DGITHUB_PAT_TOKEN=$PAT
-          ls
+         
         env:
           PAT: ${{ secrets.PAT_TOKEN }}
      
-          
+      - name: Rename AAR file
+        run: |
+          TAG_NAME= ${{github.ref_name}}
+          mv app/build/outputs/aar/app-release.aar app/build/outputs/aar/chatbot_v${TAG_NAME}.aar
       - name: Publish
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "app/build/outputs/aar/app-release.aar"
+          artifacts: "app/build/outputs/aar/*.aar"
           replacesArtifacts: false
           allowUpdates: true
           tag: ${{needs.release.outputs.tag}}
