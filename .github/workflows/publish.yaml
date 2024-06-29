@@ -24,16 +24,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Set secrets as environment variables
-        run: |
-          echo "Setting secrets as environment variables..."
-          echo "GITHUB_PAT_TOKEN=${{ secrets.GITHUB_PAT_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Create gradle.properties
-        run: |
-          echo "Creating gradle.properties with GITHUB_PAT_TOKEN..."
-          echo "systemProp.github.pat.token=${{ secrets.GITHUB_PAT_TOKEN }}" > ~/.gradle/gradle.properties
-
+    
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
@@ -47,7 +38,7 @@ jobs:
       - name: Assemble AAR
         run: |
           
-          ./gradlew assembleRelease -GITHUB_PAT_TOKEN=$GITHUB_PAT_TOKEN
+          ./gradlew assembleRelease -DGITHUB_PAT_TOKEN=${{ secrets.GITHUB_PAT_TOKEN }}
 
       - name: Assemble AAR
         uses: gradle/gradle-build-action@v2
