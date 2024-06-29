@@ -18,7 +18,7 @@ jobs:
       - name: Use the secret
         run: |
           echo ${{ secrets.MY_API_KEY }}   
-          echo ${{ secrets.PAT_TOKEN }}   
+          echo ${{ secrets.PAT_TOKEN }}
         env:
           SECRET_NAME: ${{ secrets.MY_API_KEY }}
           PAT: ${{ secrets.PAT_TOKEN }}
@@ -45,7 +45,7 @@ jobs:
       - name: Assemble AAR
         run: |
           
-          ./gradlew assembleRelease -DGITHUB_PAT_TOKEN=${{ secrets.GITHUB_PAT_TOKEN }}
+          ./gradlew assembleRelease -DGITHUB_PAT_TOKEN=$PAT
 
       - name: Assemble AAR
         uses: gradle/gradle-build-action@v2
