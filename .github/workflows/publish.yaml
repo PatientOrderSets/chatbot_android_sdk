@@ -35,20 +35,8 @@ jobs:
 
       - name: Replace USER_NAME and GIT_PAT in settings.gradle
         run: |
-          if [[ -z "${{ secrets.GITHUB_PAT_TOKEN }}" ]]; then
-            echo "GITHUB_PAT_TOKEN is not set!"
-            exit 1
-          else
-            echo "GITHUB_PAT_TOKEN is set."
-          fi
           
           echo "Replacing values in settings.gradle..."
-          sed -i 's/USER_NAME/${{ secrets.GITHUB_USERNAME }}/g' settings.gradle
-          sed -i 's/GIT_PAT/${{ secrets.GITHUB_PAT_TOKEN }}/g' settings.gradle
-
-      - name: Replace USER_NAME and GIT_PAT in settings.gradle
-        run: |
-          sed -i 's/USER_NAME/${{ secrets.GITHUB_USERNAME }}/g' settings.gradle
           sed -i 's/GIT_PAT/${{ secrets.GITHUB_PAT_TOKEN }}/g' settings.gradle
 
       - name: Assemble AAR
