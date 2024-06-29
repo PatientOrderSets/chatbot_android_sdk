@@ -37,7 +37,7 @@ jobs:
       - name: Assemble AAR
         run: |
           
-          ./gradlew assembleRelease -GITHUB_PAT_TOKEN=${{GITHUB_PAT_TOKEN}}
+          ./gradlew assembleRelease -GITHUB_PAT_TOKEN=$GITHUB_PAT_TOKEN
 
       - name: Assemble AAR
         uses: gradle/gradle-build-action@v2
