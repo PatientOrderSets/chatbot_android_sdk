@@ -10,6 +10,8 @@ concurrency:
   cancel-in-progress: true
 env:
   GITHUB_PAT_TOKEN: ${{secrets.GITHUB_PAT_TOKEN}}
+  SECRET_NAME: ${{ secrets.MY_API_KEY }}
+  PAT: ${{ secrets.PAT_TOKEN }}
 jobs:
   publish:
     runs-on: ubuntu-latest
