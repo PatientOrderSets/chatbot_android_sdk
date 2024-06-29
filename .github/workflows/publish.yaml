@@ -35,7 +35,7 @@ jobs:
 
       - name: Set up environment variable for GitHub PAT
         run: |
-          echo "GITHUB_PAT_TOKEN=${{ secrets.GITHUB_PAT_TOKEN }}" >> $GITHUB_PAT_TOKEN
+          echo "GITHUB_PAT=${{ secrets.GITHUB_PAT_TOKEN }}" >> $GITHUB_PAT_TOKEN
 
       - name: Assemble AAR
         run: |
