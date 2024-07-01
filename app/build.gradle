@@ -132,5 +132,3 @@ def addDll = groovyShell.parse(new File("$rootDir/app/add-dll.gradle"))
 addDll.clean(rootDir.toString())
 addDll.flutter(rootDir.toString(), flutterEngine)
 addDll.sqlite(rootDir.toString())
-
-apply plugin: 'maven-publish'
