@@ -57,20 +57,19 @@ jobs:
           git clone -b main https://$PAT@github.com/PatientOrderSets/chatbot_android_sdk_skeleton_app.git
         env:
           PAT: ${{ secrets.PAT_TOKEN }}
-      - name: "Updated latest AAR with skelton app"
+      - name: Update latest AAR with Skeleton app
         run: |
           TAG_NAME=${{ github.ref_name }}
           rm -f chatbot_android_sdk_skeleton_app/app/libs/*.aar
-          cp app/build/outputs/aar/chatbot_v$TAG_NAME.aar chatbot_android_sdk_skeleton_app/app/libs/
+          cp app/build/outputs/aar/chatbot_v${TAG_NAME}.aar chatbot_android_sdk_skeleton_app/app/libs/
           cd chatbot_android_sdk_skeleton_app/
           git config user.name "Github Actions"
           git config user.email "pipeline@github.com"
           git add .
-          git commit -m ${ TAG_NAME }
-          git tag ${ TAG_NAME }
+          git commit -m ${TAG_NAME}
+          git tag ${TAG_NAME}
           git push
-          git push --tag
-          cd ..
+          git push --tags
 
       - name: Publish
         uses: ncipollo/release-action@v1
