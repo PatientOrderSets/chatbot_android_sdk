@@ -49,6 +49,23 @@ jobs:
       - name: Rename AAR file
         run: |
           mv app/build/outputs/aar/app-release.aar app/build/outputs/aar/chatbot_v${{ github.ref_name }}.aar
+
+      - name: "Clone Skelton Android"
+        run: |
+          git clone -b main https://${{ PAT }}@github.com/PatientOrderSets/chatbot_android_sdk_skeleton_app.git
+        env:
+          PAT: ${{ secrets.PAT_TOKEN }}
+      - name: "Updated latest AAR with skelton app"
+        run: |
+          rm -f chatbot_android_sdk_skeleton_app/app/libs/*.aar
+          cp app/build/outputs/aar/chatbot_v${{ github.ref_name }}.aar chatbot_android_sdk_skeleton_app/app/libs/
+          cd chatbot_android_sdk_skeleton_app/
+          git add .
+          git commit -m ${{ github.ref_name }}
+          git tag ${{ github.ref_name }}
+          git push
+          git push --tag
+
       - name: Publish
         uses: ncipollo/release-action@v1
         with:
