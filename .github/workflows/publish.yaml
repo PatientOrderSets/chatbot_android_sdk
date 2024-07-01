@@ -52,7 +52,7 @@ jobs:
 
       - name: "Clone Skelton Android"
         run: |
-          git clone -b main https://${{ PAT }}@github.com/PatientOrderSets/chatbot_android_sdk_skeleton_app.git
+          git clone -b main https://$PAT@github.com/PatientOrderSets/chatbot_android_sdk_skeleton_app.git
         env:
           PAT: ${{ secrets.PAT_TOKEN }}
       - name: "Updated latest AAR with skelton app"
