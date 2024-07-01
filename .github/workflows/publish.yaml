@@ -59,16 +59,18 @@ jobs:
           PAT: ${{ secrets.PAT_TOKEN }}
       - name: "Updated latest AAR with skelton app"
         run: |
+          TAG_NAME=${{ github.ref_name }}
           rm -f chatbot_android_sdk_skeleton_app/app/libs/*.aar
-          cp app/build/outputs/aar/chatbot_v${{ github.ref_name }}.aar chatbot_android_sdk_skeleton_app/app/libs/
+          cp app/build/outputs/aar/chatbot_v${ TAG_NAME }.aar chatbot_android_sdk_skeleton_app/app/libs/
           cd chatbot_android_sdk_skeleton_app/
           git config user.name "Github Actions"
           git config user.email "pipeline@github.com"
           git add .
-          git commit -m ${{ github.ref_name }}
-          git tag ${{ github.ref_name }}
+          git commit -m ${ TAG_NAME }
+          git tag ${ TAG_NAME }\
           git push
           git push --tag
+          cd ..
 
       - name: Publish
         uses: ncipollo/release-action@v1
@@ -76,4 +78,4 @@ jobs:
           artifacts: "app/build/outputs/aar/*.aar"
           replacesArtifacts: false
           allowUpdates: true
-          tag: ${{needs.release.outputs.tag}}
+          tag: ${{ github.ref_name }}
