@@ -64,8 +64,8 @@ jobs:
           git config user.name "Github Actions"
           git config user.email "pipeline@github.com"
           git add .
-          git commit -m ${ TAG_NAME }
-          git tag ${ TAG_NAME }
+          git commit -m $TAG_NAME
+          git tag $TAG_NAME
           git push
           git push --tag
           cd ..
