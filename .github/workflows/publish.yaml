@@ -16,13 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     steps:
-      - name: Use the secret
-        run: |
-          echo ${{ secrets.MY_API_KEY }}   
-          echo ${{ secrets.PAT_TOKEN }}
-        env:
-          SECRET_NAME: ${{ secrets.MY_API_KEY }}
-          PAT: ${{ secrets.PAT_TOKEN }}
       - name: 'Checkout'
         uses: actions/checkout@v4
           
@@ -41,10 +34,11 @@ jobs:
 
       - name: Assemble AAR
         run: |
-          ./gradlew assembleRelease -DGITHUB_PAT_TOKEN=$PAT
+          ./gradlew assembleRelease -DGITHUB_PAT_TOKEN=$PAT -DGITHUB_USER_NAME=$USER_NAME
          
         env:
           PAT: ${{ secrets.PAT_TOKEN }}
+          USER_NAME: ${{ secrets.USER_NAME }}
      
       - name: Rename AAR file
         run: |
