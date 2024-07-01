@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
-            url = uri("https://maven.pkg.github.com/suhail-trc/chatbot_sdk_channel")
+            url = uri("https://maven.pkg.github.com/PatientOrderSets/chatbot_android_sdk")
             credentials {
                 username = System.getProperty("GITHUB_USER_NAME")
                 password = System.getProperty("GITHUB_PAT_TOKEN")
