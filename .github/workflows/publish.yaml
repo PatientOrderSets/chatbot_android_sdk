@@ -1,8 +1,6 @@
 name: Publish
 on:
   push:
-    branches:
-      - '*'
     tags:
       - '*'
 
@@ -57,19 +55,20 @@ jobs:
           git clone -b main https://$PAT@github.com/PatientOrderSets/chatbot_android_sdk_skeleton_app.git
         env:
           PAT: ${{ secrets.PAT_TOKEN }}
-      - name: Update latest AAR with Skeleton app
+      - name: "Updated latest AAR with skelton app"
         run: |
           TAG_NAME=${{ github.ref_name }}
           rm -f chatbot_android_sdk_skeleton_app/app/libs/*.aar
-          cp app/build/outputs/aar/chatbot_v${TAG_NAME}.aar chatbot_android_sdk_skeleton_app/app/libs/
+          cp app/build/outputs/aar/chatbot_v$TAG_NAME.aar chatbot_android_sdk_skeleton_app/app/libs/
           cd chatbot_android_sdk_skeleton_app/
           git config user.name "Github Actions"
           git config user.email "pipeline@github.com"
           git add .
-          git commit -m ${TAG_NAME}
-          git tag ${TAG_NAME}
+          git commit -m ${ TAG_NAME }
+          git tag ${ TAG_NAME }
           git push
-          git push --tags
+          git push --tag
+          cd ..
 
       - name: Publish
         uses: ncipollo/release-action@v1
