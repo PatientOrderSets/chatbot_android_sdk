@@ -62,6 +62,8 @@ jobs:
           rm -f chatbot_android_sdk_skeleton_app/app/libs/*.aar
           cp app/build/outputs/aar/chatbot_v${{ github.ref_name }}.aar chatbot_android_sdk_skeleton_app/app/libs/
           cd chatbot_android_sdk_skeleton_app/
+          git config user.name "Github Actions"
+          git config user.email "pipeline@github.com"
           git add .
           git commit -m ${{ github.ref_name }}
           git tag ${{ github.ref_name }}
