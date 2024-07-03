@@ -42,7 +42,7 @@ jobs:
      
       - name: Rename AAR file
         run: |
-          mv app/build/outputs/aar/app-release.aar app/build/outputs/aar/chatbot_v${{ github.ref_name }}.aar
+          mv app/build/outputs/aar/app-release.aar app/build/outputs/aar/chatbot_sdk.aar
 
       - name: "Clone Skelton Android"
         run: |
@@ -53,7 +53,7 @@ jobs:
         run: |
           TAG_NAME=${{ github.ref_name }}
           rm -f chatbot_android_sdk_skeleton_app/app/libs/*.aar
-          cp app/build/outputs/aar/chatbot_v$TAG_NAME.aar chatbot_android_sdk_skeleton_app/app/libs/
+          cp app/build/outputs/aar/chatbot_sdk.aar chatbot_android_sdk_skeleton_app/app/libs/
           cd chatbot_android_sdk_skeleton_app/
           git config user.name "Github Actions"
           git config user.email "pipeline@github.com"
